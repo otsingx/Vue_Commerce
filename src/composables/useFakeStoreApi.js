@@ -5,7 +5,6 @@ export const useFakeStoreApi = () => {
   const categories = ref([]);
   const detailsProduit = ref(null);
   const chargement = ref(false);
-    const afficherChargement = ref(false); //add
   const erreur = ref(null);
 
   const URL_API = 'https://dummyjson.com';
@@ -19,36 +18,9 @@ export const useFakeStoreApi = () => {
   };
 
 
-  //add
-    let timerChargement = null;
-
-    const debutChargement = () => {
-      chargement.value = true;
-      afficherChargement.value = false;
-      erreur.value = null;
-
-      timerChargement = setTimeout(() => {
-        if (chargement.value) {
-          afficherChargement.value = true;
-        }
-      }, 250);
-    };
-
-    const finChargement = () => {
-      chargement.value = false;
-      afficherChargement.value = false;
-
-      if (timerChargement) {
-        clearTimeout(timerChargement);
-        timerChargement = null;
-      }
-    }; 
-    //add
-
 const chargerProduits = async () => {
-    debutChargement();//add
-  //chargement.value = true;
- // erreur.value = null;
+  chargement.value = true;
+ erreur.value = null;
   try {
     const slugs = Object.values(categoriesMap);
     const resultats = await Promise.all(slugs.map((slug) => fetch(`${URL_API}/products/category/${slug}`).then((r) => r.json())));
@@ -56,8 +28,7 @@ const chargerProduits = async () => {
   } catch (err) {
     erreur.value = err.message;
   } finally {
-     finChargement();//add
-    //chargement.value = false;
+    chargement.value = false;
   }
 };
 
@@ -66,9 +37,8 @@ const chargerProduits = async () => {
   };
 
   const chargerProduitParId = async (id) => {
-      debutChargement();//add
-    //chargement.value = true;
-    //erreur.value = null;
+    chargement.value = true;
+    erreur.value = null;
     try {
       const reponse = await fetch(`${URL_API}/products/${id}`);
       if (!reponse.ok) throw new Error('Erreur lors du chargement du produit');
@@ -76,15 +46,13 @@ const chargerProduits = async () => {
     } catch (err) {
       erreur.value = err.message;
     } finally {
-       finChargement();
-      //chargement.value = false;
+    chargement.value = false;
     }
   };
 
   const chargerProduitsParCategorie = async (categorieFR) => {
-      debutChargement();//add
-    //chargement.value = true;
-   // erreur.value = null;
+       chargement.value = true;
+        erreur.value = null;
     try {
       const slug = categoriesMap[categorieFR];
       const reponse = await fetch(`${URL_API}/products/category/${slug}`);
@@ -94,8 +62,7 @@ const chargerProduits = async () => {
     } catch (err) {
       erreur.value = err.message;
     } finally {
-       finChargement();//add
-      //chargement.value = false;
+      chargement.value = false;
     }
   };
 
@@ -104,7 +71,6 @@ const chargerProduits = async () => {
     categories,
     detailsProduit,
     chargement,
-    afficherChargement, //add
     erreur,
     chargerProduits,
     chargerCategories,

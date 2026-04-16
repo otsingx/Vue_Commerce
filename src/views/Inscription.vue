@@ -11,22 +11,18 @@
         <label for="prenom">Prénom</label>
         <input id="prenom" name="prenom" type="text" v-model="prenom" autocomplete="given-name" placeholder="Entrez votre prénom" />
       </div>
-
       <div>
         <label for="nom">Nom</label>
         <input id="nom" name="nom" type="text" v-model="nom" autocomplete="family-name" placeholder="Entrez votre nom" />
       </div>
-
       <div>
         <label for="email">Email</label>
         <input id="email" name="email" type="email" v-model="email" autocomplete="email" placeholder="Entrez votre email" />
       </div>
-
       <div>
         <label for="pwd">Mot de passe</label>
         <input id="pwd" name="password" type="password" v-model="pwd" autocomplete="new-password" placeholder="Entrez votre mot de passe" />
       </div>
-
       <button type="submit" class="btn btn-primary btn-petit">Créer un compte</button>
     </form>
   </section>
@@ -35,7 +31,7 @@
 <script setup>
 import { ref } from 'vue';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
 import { useUserStore } from '../stores/userStore';
 import { useRouter } from 'vue-router';
 import BoiteMessage from '../components/BoiteMessage.vue';
@@ -67,12 +63,16 @@ const inscription = async (e) => {
   }
 
   try {
+    userStore.enCoursInscription = true;
     const result = await createUserWithEmailAndPassword(auth, email.value, pwd.value);
     await updateProfile(result.user, {
       displayName: `${prenom.value} ${nom.value}`,
     });
+    await result.user.reload();
+    userStore.enCoursInscription = false;
 
-    userStore.connexion(result.user);
+    await signOut(auth);
+    userStore.deconnexion();
 
     messageType.value = 'succes';
     message.value = 'Compte créé avec succès ! Vous serez redirigé dans un instant.';
@@ -84,8 +84,9 @@ const inscription = async (e) => {
 
     setTimeout(() => {
       router.push('/connexion');
-    }, 2000);
+    }, 4000);
   } catch (error) {
+    userStore.enCoursInscription = false;
     messageType.value = 'erreur';
 
     if (error.code === 'auth/email-already-in-use') {
@@ -95,6 +96,9 @@ const inscription = async (e) => {
     } else {
       message.value = 'Erreur: ' + error.message;
     }
+    setTimeout(() => {
+      location.reload();
+    }, 4000);
   }
 };
 </script>
@@ -125,10 +129,7 @@ const inscription = async (e) => {
   }
 
   .inscription-titre {
-   margin-bottom: var(--space-6);
+    margin-bottom: var(--space-6);
   }
 }
 </style>
-
-
-

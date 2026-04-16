@@ -14,14 +14,19 @@ export const useUserStore = defineStore('user', () => {
     return prenom.charAt(0).toUpperCase() + prenom.slice(1).toLowerCase();
   });
 
+  const authPret = ref(false); 
   const connexion = (data) => {
     user.value = data;
+    authPret.value = true; 
   };
 
   const deconnexion = () => {
     user.value = null;
-     localStorage.removeItem('panier-items');
+    authPret.value = true;
+    localStorage.removeItem('panier-items');
   };
 
-  return { user, isConnecte, prenomSeulement, connexion, deconnexion };
+  const enCoursInscription = ref(false);
+
+  return { user, isConnecte, prenomSeulement, connexion, deconnexion, authPret, enCoursInscription };
 });

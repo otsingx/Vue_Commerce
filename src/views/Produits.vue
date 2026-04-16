@@ -1,8 +1,7 @@
 <template>
   <div class="message-global">
-    <BoiteMessage v-if="afficherChargement" type="info">Chargement...</BoiteMessage>
+    <BoiteMessage v-if="chargement" type="info"> Chargement... </BoiteMessage>
   </div>
-
   <section class="container mt-24">
     <h2 class="produits-titre text-center mb-12">Liste des produits</h2>
 
@@ -18,7 +17,7 @@
       <CarteProduit v-for="p in produits" :key="p.id" :produit="p" />
     </div>
 
-    <BoiteMessage v-if="!afficherChargement && !erreur && produits.length === 0" type="info"> Aucun produit dans cette catégorie. </BoiteMessage>
+    <BoiteMessage v-if="!chargement && !erreur && produits.length === 0" type="info"> Aucun produit dans cette catégorie. </BoiteMessage>
   </section>
 </template>
 
@@ -34,7 +33,7 @@ const panierStore = usePanierStore();
 const route = useRoute();
 const router = useRouter();
 
-const { produits, categories, afficherChargement: afficherChargement, erreur, chargerProduits, chargerCategories, chargerProduitsParCategorie } = useFakeStoreApi();
+const { produits, categories, chargement, erreur, chargerProduits, chargerCategories, chargerProduitsParCategorie } = useFakeStoreApi();
 
 const categorieSelectionnee = ref('all');
 
@@ -43,7 +42,7 @@ const chargerSelonCategorie = () => {
 
   if (categorie) {
     categorieSelectionnee.value = categorie;
-    chargerProduitsParCategorie(categorie); // ← French name, no conversion
+    chargerProduitsParCategorie(categorie);
   } else {
     categorieSelectionnee.value = 'all';
     chargerProduits();
@@ -110,7 +109,7 @@ select {
     gap: var(--space-4);
   }
   .produits-titre {
-  margin-bottom: var(--space-6);
+    margin-bottom: var(--space-6);
   }
 }
 </style>

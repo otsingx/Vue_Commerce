@@ -50,16 +50,8 @@ const connexionEmail = async (e) => {
   }
 
   try {
-    const result = await signInWithEmailAndPassword(auth, email.value, pwd.value);
-    userStore.connexion(result.user);
-
-    message.value = 'Connexion réussie ! Redirection...';
-    typeMessage.value = 'succes';
-
-    setTimeout(() => {
-      const redirectPath = route.query.redirect || '/';
-      router.push(redirectPath);
-    }, 2000);
+    await signInWithEmailAndPassword(auth, email.value, pwd.value);
+    router.push(route.query.redirect || '/');
   } catch (error) {
     message.value = 'Adresse e-mail ou mot de passe incorrect';
     typeMessage.value = 'erreur';
@@ -93,10 +85,7 @@ const connexionEmail = async (e) => {
   }
 
   .connexion-titre {
-  margin-bottom: var(--space-6);
+    margin-bottom: var(--space-6);
   }
 }
 </style>
-
-
-

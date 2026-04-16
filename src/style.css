@@ -165,7 +165,7 @@ body {
 
 
 
-/*---@media GRID--- */
+/*---MEDIA GRID--- */
 
 
 @media (max-width: 768px) {
@@ -494,11 +494,9 @@ label {
 @media (min-width: 1280px) {
   html {
     font-size: 18px;
-    /* ← up from 16px, scales everything */
   }
 }
 
-/* Very large screens */
 @media (min-width: 1536px) {
   html {
     font-size: 20px;

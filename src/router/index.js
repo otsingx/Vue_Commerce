@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { watch } from 'vue';
 import { useUserStore } from '../stores/userStore';
 import Accueil from '../views/Accueil.vue';
 import Produits from '../views/Produits.vue';
@@ -52,8 +53,22 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
+
+  if (!userStore.authPret) {
+    await new Promise((resolve) => {
+      const unwatch = watch(
+        () => userStore.authPret,
+        (pret) => {
+          if (pret) {
+            unwatch();
+            resolve();
+          }
+        },
+      );
+    });
+  }
 
   if (to.meta.prive && !userStore.isConnecte) {
     return { name: 'connexion' };

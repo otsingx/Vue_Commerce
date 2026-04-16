@@ -2,13 +2,11 @@ import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 
 export const usePanierStore = defineStore('panier', () => {
-  // ← load from localStorage on startup
   const savedItems = localStorage.getItem('panier-items');
   const items = ref(savedItems ? JSON.parse(savedItems) : []);
 
   const message = ref('');
 
-  // ← save to localStorage whenever items change
   watch(
     items,
     (newItems) => {
@@ -51,11 +49,11 @@ export const usePanierStore = defineStore('panier', () => {
   const sousTotal = computed(() => items.value.reduce((sum, item) => sum + item.price * item.quantity, 0));
   const taxes = computed(() => sousTotal.value * 0.15);
   const total = computed(() => sousTotal.value + taxes.value);
-  
-const vider = () => {
-  items.value = [];
-  localStorage.removeItem('panier-items');
-};
+
+  const vider = () => {
+    items.value = [];
+    localStorage.removeItem('panier-items');
+  };
   return {
     items,
     ajouter,

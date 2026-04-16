@@ -1,5 +1,5 @@
 <template>
-  <nav :class="['navbar', estAccueil ? 'navbar-transparente' : 'navbar-gradient']" aria-label="Navigation principale"">
+  <nav :class="['navbar', estAccueil ? 'navbar-transparente' : 'navbar-gradient']" aria-label="Navigation principale">
     <div class="nav-logo">
       <RouterLink to="/" class="logo-texte">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -10,13 +10,11 @@
       </RouterLink>
     </div>
 
-    <!-- HAMBURGER BTN -->
     <button class="hamburger" @click="menuOuvert = !menuOuvert" aria-label="Menu">
       <Menu v-if="!menuOuvert" :size="26" :stroke-width="2.5" />
       <X v-else :size="26" :stroke-width="2.5" />
     </button>
 
-    <!-- NAV MENU -->
     <ul :class="['nav-menu', { 'nav-menu--ouvert': menuOuvert }]">
       <template v-if="userStore.isConnecte">
         <li>
@@ -29,6 +27,7 @@
         </li>
         <li><button @click="logout" class="btn btn-deconnexion">Déconnexion</button></li>
       </template>
+
       <template v-else>
         <li><RouterLink to="/" @click="menuOuvert = false">Accueil</RouterLink></li>
         <li><RouterLink to="/produits" @click="menuOuvert = false">Produits</RouterLink></li>
@@ -45,8 +44,8 @@ import { useUserStore } from '../stores/userStore';
 import { usePanierStore } from '../stores/panierStore';
 import { computed, ref } from 'vue';
 import { Menu, X } from 'lucide-vue-next';
-import { auth } from '../firebase';//adding
-import { signOut } from 'firebase/auth';//adding
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const router = useRouter();
 const route = useRoute();
@@ -56,20 +55,13 @@ const menuOuvert = ref(false);
 
 const estAccueil = computed(() => route.name === 'accueil' || route.path === '/');
 
-
-const logout = async () => {//adding
-  await signOut(auth);        // ← actually sign out from Firebase
+const logout = async () => {
+  await signOut(auth);
   userStore.deconnexion();
-  panierStore.vider();  // ← clear cart
-  menuOuvert.value = false;      
+  panierStore.vider();
+  menuOuvert.value = false;
   router.push('/');
 };
-
-
-
-
-
-
 </script>
 
 <style scoped>
@@ -203,7 +195,7 @@ const logout = async () => {//adding
   }
 
   .logo-texte {
-  font-size: var(--font-size-lg);
+    font-size: var(--font-size-lg);
   }
 }
 </style>

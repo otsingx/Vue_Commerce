@@ -1,11 +1,11 @@
 <template>
   <div class="message-global">
     <BoiteMessage v-if="panierStore?.message" type="succes">{{ panierStore.message }}</BoiteMessage>
-    <BoiteMessage v-if="afficherChargement"type="info">Chargement...</BoiteMessage>
+      <BoiteMessage v-if="chargement" type="info">Chargement...</BoiteMessage>
     <BoiteMessage v-if="erreur" type="erreur">Produit introuvable.</BoiteMessage>
   </div>
 
-  <section class="carte-details container mt-24" v-if="detailsProduit && !afficherChargement && !erreur">
+  <section class="carte-details container mt-24" v-if="detailsProduit && ! chargement && !erreur">
     <div class="detail-image">
       <img :src="detailsProduit.thumbnail" :alt="detailsProduit.title" class="image-produit" />
     </div>
@@ -58,7 +58,7 @@ const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const panierStore = usePanierStore();
-const { detailsProduit, afficherChargement, erreur, chargerProduitParId } = useFakeStoreApi();
+const { detailsProduit, chargement, erreur, chargerProduitParId } = useFakeStoreApi();
 
 const categoriesFR = {
   'womens-dresses': 'Vêtements femme',
@@ -77,7 +77,7 @@ const ajouterAuPanier = () => {
   panierStore.ajouter(detailsProduit.value);
   setTimeout(() => {
     router.back();
-  }, 2000);
+  }, 3000);
 };
 </script>
 
@@ -89,7 +89,7 @@ const ajouterAuPanier = () => {
   padding-top: var(--space-12);
   padding-bottom: var(--space-12);
   align-items: start;
-   background: linear-gradient(to bottom, #fce5e7, #edf1ed);
+  background: linear-gradient(to bottom, #fce5e7, #edf1ed);
   padding: var(--space-8);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -136,7 +136,6 @@ const ajouterAuPanier = () => {
 }
 
 .produit-titre {
-  
   font-weight: 800;
   color: var(--neutral-soft);
   line-height: 1.2;
@@ -169,7 +168,6 @@ const ajouterAuPanier = () => {
   color: var(--neutral-soft);
 }
 
-
 .description {
   color: var(--neutral-soft);
   opacity: 0.8;
@@ -201,7 +199,7 @@ const ajouterAuPanier = () => {
 
 @media (max-width: 768px) {
   .carte-details {
-    grid-template-columns: 1fr; /* ← stack vertically */
+    grid-template-columns: 1fr;
     gap: var(--space-6);
     padding: var(--space-6);
     margin-top: var(--space-2);

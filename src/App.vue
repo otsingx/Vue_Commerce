@@ -1,9 +1,7 @@
 <template>
   <div class="app-layout">
-    <!-- ← add the wrapper div -->
     <NavBar />
     <main class="app-main">
-      <!-- ← wrap RouterView in main -->
       <RouterView />
     </main>
     <Footer />
@@ -14,19 +12,21 @@
 import NavBar from './components/NavBar.vue';
 import Footer from './components/Footer.vue';
 import { onMounted } from 'vue';
-import { auth } from './firebase'; //adding
-import { onAuthStateChanged } from 'firebase/auth'; //adding
-import { useUserStore } from './stores/userStore'; //adding
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useUserStore } from './stores/userStore';
 
-const userStore = useUserStore(); //adding
+const userStore = useUserStore();
 
-// ← restore Firebase session on every page load
 onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      userStore.connexion(user); // ← user still logged in
+      if (userStore.enCoursInscription) return;
+      await user.reload();
+      const freshUser = auth.currentUser;
+      userStore.connexion(freshUser);
     } else {
-      userStore.deconnexion(); // ← user logged out
+      userStore.deconnexion();
     }
   });
 });
@@ -47,7 +47,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .app-main {
     padding-bottom: var(--space-4);
-    margin-bottom: 0; /* ← much less space on mobile */
+    margin-bottom: 0;
   }
 }
 </style>

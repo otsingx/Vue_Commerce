@@ -24,8 +24,20 @@ defineProps({
   text-align: center;
   box-shadow: var(--shadow-sm);
   font-family: var(--font-family);
-  max-width: 480px;            
+  max-width: 480px;
   word-break: break-word;
+  animation: fadeIn 0.3s ease 0.5s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .boite-message.succes {
   border: 2px solid var(--success-color);
@@ -44,7 +56,7 @@ defineProps({
 
 @media (max-width: 480px) {
   .boite-message {
-    max-width: 90%;             
+    max-width: 90%;
     font-size: var(--font-size-sm);
     padding: var(--space-3);
   }

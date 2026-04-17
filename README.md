@@ -36,15 +36,15 @@ The focus was on building a clean user interface, implementing authentication wi
 ## Demo
 
 ### Protected Flow
-![Protected Flow](./assets/gif/protected-flow.gif)
+![Protected Flow](./src/assets/gif/protected-flow.gif)
 
 ### Cart Flow
-![Cart Flow](./assets/gif/cart-flow.gif)
+![Cart Flow](./src/assets/gif/cart-flow.gif)
 
 ## Preview
 
 ### Mobile
-![Mobile](./assets/screenshot/mobile-menu.png)
+![Mobile](./src/assets/screenshot/mobile-menu.png)
 
 
 ## Environment Variables

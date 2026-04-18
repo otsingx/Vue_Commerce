@@ -3,7 +3,7 @@
 Frontend e-commerce web application built with Vue 3, Vite, and Firebase authentication.
 
 ## Live Demo
-https://https://vue-boutique.netlify.app
+https://vue-boutique.netlify.app 
 
 
 ## Overview
